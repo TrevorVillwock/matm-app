@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/trevorvillwock/Desktop/MATM/Python/matm-app",
+      "program": "/Users/trevorvillwock/Desktop/MATM/Python/matm-app/build/Debug/outDebug"
+    }
+  ]
+}
