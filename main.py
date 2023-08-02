@@ -1,5 +1,5 @@
 # Built following tutorial at https://www.youtube.com/watch?v=1itG8q-sCGY
-
+# Creating a virtual environment: https://docs.python.org/3/tutorial/venv.html
 import customtkinter as ctk
 
 # widgets nested inside eachother in a hierarchy

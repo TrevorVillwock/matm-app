@@ -1,6 +1,26 @@
-# Source: http://ajaxsoundstudio.com/pyodoc/examples/03-generators/01-complex-oscs.html
-# pyo docs: http://ajaxsoundstudio.com/pyodoc/
+"""
+01-complex-oscs.py - Complex spectrum oscillators.
 
+This tutorial presents four objects of the library which are
+useful to generate complex spectrums by means of synthesis.
+
+Blit:
+Impulse train generator with control over the number of harmonics.
+
+RCOsc:
+Aproximation of a RC circuit (a capacitor and a resistor in series).
+
+SineLoop:
+Sine wave oscillator with feedback.
+
+SuperSaw:
+Roland JP-8000 Supersaw emulator.
+
+Use the "voice" slider of the window "Input interpolator" to
+interpolate between the four waveforms. Each one have an LFO
+applied to the argument that change the tone of the sound.
+
+"""
 from pyo import *
 
 s = Server().boot()
