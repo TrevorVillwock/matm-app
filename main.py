@@ -1,3 +1,5 @@
+# This module creates the starting window for the application
+#
 # Built following tutorial at https://www.youtube.com/watch?v=1itG8q-sCGY
 # Creating a virtual environment: https://docs.python.org/3/tutorial/venv.html
 import customtkinter as ctk
