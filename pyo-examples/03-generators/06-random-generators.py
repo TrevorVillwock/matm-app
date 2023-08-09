@@ -21,7 +21,7 @@ s = Server().boot()
 mid = Choice(choice=[60, 62, 63, 65, 67, 69, 71, 72], freq=[2, 3])
 
 # Two small jitters applied on frequency streams.
-# Randi interpolates between old and new values.
+# Randi interpolates (moves smoothly) between old and new values.
 jit = Randi(min=0.993, max=1.007, freq=[4.3, 3.5])
 
 # Converts midi pitches to frequencies and applies the jitters.

@@ -15,6 +15,10 @@ title_label = ctk.CTkLabel(root, text="Welcome! Select A Project:", font=ctk.CTk
 # position label
 title_label.pack(padx=10, pady=(40, 20))
 
+main_canvas = ctk.CTkCanvas(root, width=800, height=400, background="gray75")
+main_canvas.pack()
+main_canvas.place(x=0, y=0)
+
 # TODO: make icons for each of these
 square_sounds_button = ctk.CTkButton(root, text="Square Sounds", width=500)
 synth_sandbox_button = ctk.CTkButton(root, text="Synth Sandbox", width=500)
