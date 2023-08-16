@@ -10,10 +10,7 @@ import customtkinter as ctk
 # widgets are labels, buttons, etc.
 root = ctk.CTk()
 root.geometry("800x400")
-root.grid_rowconfigure(0, weight=1)
-root.grid_columnconfigure(0, weight=1)
 root.title("Music and the Macrocosmos")
-root.attributes("-fullscreen", True)
 
 # first argument is parent widget
 title_label = ctk.CTkLabel(root, text="Welcome! Select A Project:", font=ctk.CTkFont(size=30, weight="bold"))
@@ -21,11 +18,7 @@ title_label = ctk.CTkLabel(root, text="Welcome! Select A Project:", font=ctk.CTk
 title_label.pack(padx=10, pady=(40, 20))
 
 # Layout options: pack, grid, place
-
 # https://tkdocs.com/tutorial/canvas.html
-
-main_menu_frame = ctk.CTkFrame(root, fg_color="black")
-main_menu_frame.grid(column=0, row=0, sticky="nsew")
 
 # TODO: make icons for each of these
 square_sounds_button = ctk.CTkButton(root, text="Square Sounds", width=500, font=("Arial", 18))
@@ -35,9 +28,6 @@ conway_button = ctk.CTkButton(root, text="Conway's Game of Sound", width=500, fo
 square_sounds_button.pack(pady=10)
 synth_sandbox_button.pack(pady=10)
 conway_button.pack(pady=10)
-
-# square_sounds_canvas = ctk.CTkCanvas(main_canvas, width=400, height=200, background="blue")
-# square_sounds_canvas.pack()
 
 # runs infinite event loop, anything below this line won't run
 root.mainloop()

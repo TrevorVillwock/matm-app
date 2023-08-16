@@ -4,7 +4,7 @@
 This script simply plays a 1000 Hz sine tone.
 
 """
-from pyo import *
+from ..pyo import *
 
 # Creates and boots the server.
 # The user should send the "start" command from the GUI.

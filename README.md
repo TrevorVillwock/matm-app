@@ -15,6 +15,11 @@ For an explanation of scripts, modules, packages, and libraries, read here: http
 
 The `pyo-examples` folder in this folder contains working examples with `pyo` from the package's github that can be used to expand the project: https://github.com/belangeo/pyo
 
+## Importing pyo locally
+
+In the future, we may want to make changes to the `pyo` module, so I've included my fork of it as a submodule in this
+repo. After cloning from GitHub, the `pyo` directory will be empty; to clone the submodule as well run `git submodule update --init` from inside the `matm-app` directory. We can use this local version of pyo by replacing `from pyo import *` with `from ..pyo import *`.  
+
 ## Recording
 
 The pyo server has built-in recording ability. By default, the recording is stored in your home directory. To change this to the directory of your Python file or another folder on your computer, use `Server.recordOptions(filename = "./your_file_name.wav")`.
