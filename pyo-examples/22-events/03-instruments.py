@@ -3,7 +3,7 @@
 
 The default instrument ( DefaultInstrument ) is a basic stereo RC oscillator
 passing through reverberation unit. For the events framework to be really
-useful, it has to give the user the opportunity to use his own instruments.
+useful, it has to give the user the opportunity to use their own instruments.
 Composing an instrument is very simple.
 
 An Events's instrument must be derived from the EventInstrument class. Its

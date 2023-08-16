@@ -1,4 +1,8 @@
 customtkinter==5.2.0
 darkdetect==0.8.0
+numpy==1.25.2
+Pillow==10.0.0
+pyo==1.0.5
+six==1.16.0
 tk==0.1.0
-pyo=1.0.5
+wxPython==4.2.1

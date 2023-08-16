@@ -12,8 +12,8 @@ from pyo import *
 
 s = Server().boot()
 
-MINFREQ = 250
-MAXFREQ = 5000
+MINFREQ = 20
+MAXFREQ = 10000
 
 # Play the drum lopp.
 sf = SfPlayer("../snds/drumloop.wav", loop=True)

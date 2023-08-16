@@ -1,4 +1,5 @@
 """
+Produces segmentation fault
 01-dynamic-range.py - Adjust the dynamic range of the signal.
 
 Comparison of three objects used to adjust the dynamic range of the signal.

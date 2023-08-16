@@ -4,6 +4,7 @@
 This tutorial presents four objects of the library which are
 useful to generate complex spectrums by means of synthesis.
 
+http://ajaxsoundstudio.com/pyodoc/api/classes/generators.html?highlight=blit#pyo.Blit
 Blit:
 Impulse train generator with control over the number of harmonics.
 

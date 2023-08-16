@@ -22,7 +22,7 @@ EventSeq has an "occurrences" keyword, which can be used to fix how many
 times we want to play the sequence of values. The default value is 'inf',
 which means loop forever::
 
-    # This one stops after playing twice the sequence.
+    # This one stops after playing the sequence twice.
     e1 = Events(freq = EventSeq([500, 600, 700, 800], occurrences=2)).play()
 
 When an Events's parameter is given a list or a single value, it is

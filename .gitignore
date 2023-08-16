@@ -1,2 +1,5 @@
+# a period before a directory or a file means that it is hidden
+# and won't show up in a GUI file sistem
 .vscode/
 matm-app/
+select_pro

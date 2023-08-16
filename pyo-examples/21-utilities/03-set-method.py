@@ -27,7 +27,7 @@ from random import uniform
 
 s = Server(duplex=0).boot()
 
-# 10 frequency modulations with random parameters.
+# 10 frequency modulations with random parameters
 a = FM(
     carrier=[uniform(197, 203) for i in range(10)],
     ratio=[uniform(0.99, 1.01) for i in range(10)],

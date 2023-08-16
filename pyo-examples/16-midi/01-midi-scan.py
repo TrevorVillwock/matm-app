@@ -43,6 +43,6 @@ def scanner(ctlnum, midichnl):
 
 
 # Listen to controller input.
-scan = CtlScan2(scanner, toprint=False)
+scan = CtlScan2(scanner, toprint=True)
 
 s.gui(locals())
