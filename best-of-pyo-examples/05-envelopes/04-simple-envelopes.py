@@ -7,7 +7,7 @@ This envelope allows to apply fadein and fadeout on audio streams.
 If the `dur` argument of the Fader object is set to 0 (the default), the
 object waits for a stop() command before activating the release part of
 the envelope. Otherwise, the sum of `fadein` and `fadeout` must be less
-than or egal to `dur` and the envelope runs to the end on a play() command.
+than or equal to `dur` and the envelope runs to the end on a play() command.
 
 The Adsr object (Attack/Decay/Sustain/Release) acts exactly like the Fader
 object, with a more flexible (and so common) kind of envelope.
@@ -29,6 +29,7 @@ env.setExp(0.75)
 # Initialize  a simple wave player and apply both envelopes.
 sig = SuperSaw(freq=[100, 101], detune=0.6, bal=0.8, mul=globalamp * env).out()
 
+print(f"midiToHz: {midiToHz(69)}")
 
 def play_note():
     "Play a new note with random frequency and jitterized envelope."

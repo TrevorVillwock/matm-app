@@ -27,7 +27,6 @@ with an argument to `recstart()`.
 """
 from pyo import *
 import os
-
 s = Server().boot()
 
 # Path of the recorded sound file.

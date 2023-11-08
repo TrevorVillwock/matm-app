@@ -9,7 +9,7 @@ to process.
 Note the input variable given to each Harmonizer.
 
 """
-from pyo import *
+from pyo import Server, Sine, Harmonizer
 
 s = Server().boot()
 s.amp = 0.1
@@ -19,6 +19,7 @@ a = Sine().out()
 
 # Passes the sine wave through an harmonizer.
 h1 = Harmonizer(a).out()
+# h1.feedback = 0.5
 
 # Then the harmonized sound through another harmonizer.
 h2 = Harmonizer(h1).out()

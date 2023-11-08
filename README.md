@@ -4,7 +4,9 @@ This will eventually turn into a desktop app that will hold Python versions of a
 
 We'll be using the `pyo` package for audio; documentation here: http://ajaxsoundstudio.com/pyodoc/
 
-We'll also be using tkinter and customtkinter for the user interface (UI): 
+For looking up a specific class, this alphabetical list is helpful; use the find function in your browser to search it.
+
+We'll also be using tkinter and customtkinter for the graphical user interface (GUI): 
 
 http://tkdocs.com/
 https://pypi.org/project/customtkinter/0.3/
@@ -17,9 +19,8 @@ The `pyo-examples` folder in this folder contains working examples with `pyo` fr
 
 ## Importing pyo locally
 
-In the future, we may want to make changes to the `pyo` module, so I've included my fork of it as a submodule in this
-repo. After cloning from GitHub, the `pyo` directory will be empty; to clone the submodule as well run `git submodule update --init` from inside the `matm-app` directory. We can use this local version of pyo by replacing `from pyo import *` with `from ..pyo import *`.  
+The code for the pyo module is included here to make it easier to search through. In the future, we may also want to make changes or additions to the `pyo` module, so I've included my fork of it as a submodule in this repo. After cloning from GitHub, the `pyo` directory will be empty; to clone the submodule as well run `git submodule update --init` from inside the `matm-app` directory. We can use this local version of pyo by replacing `from pyo import *` with `from ...pyo import *`. The dots indicate to go up 2 directory levels to find the module; the first period stands for the directory the file is currently in.  
 
 ## Recording
 
-The pyo server has built-in recording ability. By default, the recording is stored in your home directory. To change this to the directory of your Python file or another folder on your computer, use `Server.recordOptions(filename = "./your_file_name.wav")`.
+The pyo server has built-in recording ability. By default, the recording is stored in your home directory. To change this to the directory of your Python file or another folder on your computer, use `s.recordOptions(filename = "./your_file_name.wav")` with `s` previously defined as `s = Server.boot()`.

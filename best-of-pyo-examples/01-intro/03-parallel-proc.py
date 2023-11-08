@@ -11,21 +11,23 @@ to the out() method of each object that should send its samples to the
 output.
 
 """
-from pyo import *
+from pyo import Server, Sine, Harmonizer, Chorus, FreqShift
 
 s = Server().boot()
 s.amp = 0.1
 
 # Creates a sine wave as the source to process.
-a = Sine()
+a = Sine().out()
 
 # Passes the sine wave through an harmonizer.
-hr = Harmonizer(a).out()
+hr1 = Harmonizer(a, transpo=-5.0, feedback=0.5).out()
+# hr2 = Harmonizer(a, transpo=-10.0).out()
+# hr3 = Harmonizer(a, transpo=5.0).out()
 
 # Also through a chorus.
-ch = Chorus(a).out()
+# ch = Chorus(a).out()
 
 # And through a frequency shifter.
-sh = FreqShift(a).out()
+# sh = FreqShift(a).out()
 
 s.gui(locals())

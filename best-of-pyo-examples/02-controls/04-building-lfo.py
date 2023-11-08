@@ -22,7 +22,7 @@ n = Noise()
 
 # Creates an LFO oscillating +/- 500 around 1000 (filter's frequency)
 lfo1 = Sine(freq=0.1, mul=500, add=1000)
-# Creates an LFO oscillating between 2 and 8 (filter's Q)
+# Creates an LFO oscillating between 2 and 8 (filter's Q (resonance))
 lfo2 = Sine(freq=0.4).range(2, 8)
 # Creates a dynamic bandpass filter applied to the noise source
 bp1 = ButBP(n, freq=lfo1, q=lfo2).out()

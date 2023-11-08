@@ -20,6 +20,8 @@ interpolate between the three sources.
 """
 from pyo import *
 
+# add filters 
+
 s = Server().boot()
 
 # White noise
