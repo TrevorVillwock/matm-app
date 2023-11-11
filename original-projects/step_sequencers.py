@@ -27,30 +27,48 @@ class Step_seq:
         self.random_note = Choice(self.notes, self.speed_lfo)
         self.synth = SuperSaw([self.random_note, self.random_note])
         self.filter = MoogLP(self.synth, self.filter_lfo)
-        self.filter.ctrl()
+        # self.filter.ctrl()
 
-step_sequencers = []
+class Seq_manager:
+    def __init__(self):
+        self.step_sequencers = []
+        self.active_voices = 0
+    
+    def set_num_voices(self, num):
+        i = self.active_voices 
+        if num < self.active_voices:  
+            print("if") 
+            while i >= num:
+                mixer.setAmp(i, 0, 0)
+                i -= 1
+                self.active_voices -= 1    
+        elif num > self.active_voices and num <= 10:
+            print("elif")
+            while i <= 9:
+                print("while")
+                mixer.setAmp(i, 0, 0.01)
+                self.active_voices += 1
+                i += 1
+                
+sm = Seq_manager()
 
 mixer = Mixer(outs=3, chnls=2, time=0.5).out()
 
-audio_file = SfPlayer("./bamboo_chimes.wav", speed=-0.3, loop=True)
+audio_file = SfPlayer("./bamboo_chimes.wav", speed=-0.1, loop=True)
 audio_file.ctrl()
 
-delay = Delay(audio_file, delay=[1,1], feedback=.5, mul=.4)
+delay = Delay(audio_file, delay=[1, 2], feedback=.5)
 delay.ctrl()
-
-# audio_file = SfMarkerShuffler("./oboe_multiphonics.aif")
-# audio_file.setRandomType(9, 0.5)
-# audio_file.ctrl()
 
 for i in range(0, 10):
     new_step_seq = Step_seq(natural_minor)
-    step_sequencers.append(new_step_seq)
+    sm.step_sequencers.append(new_step_seq)
     mixer.addInput(i, new_step_seq.filter)
     mixer.setAmp(i, 0, 0.01)
+    sm.active_voices += 1
     
 mixer.addInput(10, delay)
-mixer.setAmp(10, 0, 0.5)
+mixer.setAmp(10, 0, 0.3)
 
 s.gui(locals())
 
