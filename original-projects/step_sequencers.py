@@ -37,15 +37,15 @@ class Seq_manager:
     def set_num_voices(self, num):
         i = self.active_voices 
         if num < self.active_voices:  
-            print("if") 
+            # print("if") 
             while i >= num:
                 mixer.setAmp(i, 0, 0)
                 i -= 1
                 self.active_voices -= 1    
         elif num > self.active_voices and num <= 10:
-            print("elif")
+            # print("elif")
             while i <= 9:
-                print("while")
+                # print("while")
                 mixer.setAmp(i, 0, 0.01)
                 self.active_voices += 1
                 i += 1
