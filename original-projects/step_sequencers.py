@@ -35,14 +35,14 @@ class Seq_manager:
         self.active_voices = 0
     
     def set_num_voices(self, num):
-        i = self.active_voices 
-        if num < self.active_voices:  
+        i = self.active_voices - 1
+        if num < self.active_voices - 1:  
             # print("if") 
             while i >= num:
                 mixer.setAmp(i, 0, 0)
                 i -= 1
                 self.active_voices -= 1    
-        elif num > self.active_voices and num <= 10:
+        elif num > self.active_voices and num < 10:
             # print("elif")
             while i <= 9:
                 # print("while")
@@ -54,10 +54,10 @@ sm = Seq_manager()
 
 mixer = Mixer(outs=3, chnls=2, time=0.5).out()
 
-audio_file = SfPlayer("./bamboo_chimes.wav", speed=-0.1, loop=True)
+audio_file = SfPlayer("./bamboo_chimes.wav", speed=-0.5, loop=True, mul=0.3)
 audio_file.ctrl()
 
-delay = Delay(audio_file, delay=[1, 2], feedback=.5)
+delay = Delay(audio_file, delay=[1, 2], feedback=.5).out()
 delay.ctrl()
 
 for i in range(0, 10):
@@ -66,9 +66,6 @@ for i in range(0, 10):
     mixer.addInput(i, new_step_seq.filter)
     mixer.setAmp(i, 0, 0.01)
     sm.active_voices += 1
-    
-mixer.addInput(10, delay)
-mixer.setAmp(10, 0, 0.3)
 
 s.gui(locals())
 
