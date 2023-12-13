@@ -93,6 +93,10 @@ def num_synths_slider_move(e):
 
 def sf_speed_slider_move(e):
     audio_file.speed = e.GetEventObject().GetValue() / 200
+    
+def delay_time_slider_move(e):
+    delay_time = e.GetEventObject().GetValue() / 2000
+    sfdelay.delay = [delay_time, delay_time]
 
 metro = Metro(4).play()
 count = Counter(metro, min=0, max=8)
@@ -101,6 +105,7 @@ score = Score(count, fname="event_")
 app = wx.App(False)
 control_window = wx.Frame(None, wx.ID_ANY, "Soundscape 1")
 control_window.Show(True)
+
 num_synths_slider = wx.Slider(control_window, pos=wx.Point(0, 30), minValue=1, maxValue=10)
 num_synths_slider.Bind(wx.EVT_SLIDER, num_synths_slider_move)
 num_synths_slider_label = wx.StaticText(control_window, label="synth voices", pos=(10, 10))
@@ -108,6 +113,10 @@ num_synths_slider_label = wx.StaticText(control_window, label="synth voices", po
 sf_speed_slider = wx.Slider(control_window, pos=wx.Point(0, 70), minValue=-200, maxValue=200)
 sf_speed_slider.Bind(wx.EVT_SLIDER, sf_speed_slider_move)
 sf_speed_slider_label = wx.StaticText(control_window, label="soundfile speed", pos=(10, 50))
+
+delay_time_slider = wx.Slider(control_window, pos=(0, 110), minValue=1, maxValue=2000)
+delay_time_slider.Bind(wx.EVT_SLIDER, delay_time_slider_move)
+delay_time_slider_label = wx.StaticText(control_window, label="delay time", pos=(10, 90))
 
 s.start()
 app.MainLoop()
