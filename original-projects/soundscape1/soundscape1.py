@@ -4,8 +4,6 @@ import wx
 
 s = Server().boot()
 
-# This tells pyo to place the recording in the same directory as the file and name it test.wav
-
 s.recordOptions(filename = "./soudscape1.wav")
 s.recstart()
 
@@ -17,6 +15,7 @@ natural_minor = Choice(midiToHz([60, 62, 63, 65, 67, 68, 70, 72]))
 major_pent = Choice(midiToHz([60, 62, 64, 67, 69, 72]))
 minor_pent = Choice(midiToHz([60, 63, 65, 67, 70, 72]))
 """
+
 # note choices
 harmonic_series = [100, 200, 300, 400, 500, 600, 700, 800]
 whole_tone = midiToHz([60, 62, 64, 66, 68, 70, 72])
