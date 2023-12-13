@@ -1,19 +1,10 @@
 from pyo import *
 from random import uniform
 import wx
-import json
 
 s = Server().boot()
 
 # This tells pyo to place the recording in the same directory as the file and name it test.wav
-"""
-
-with open("./soundscape1.json") as j:
-    app_data = json.loads(j.read())
-    app_data["take"] += 1
-   
-take_number = app_data["take"]
-"""
 
 s.recordOptions(filename = "./soudscape1.wav")
 s.recstart()
@@ -85,7 +76,6 @@ for i in range(0, 10):
 def event_0():
     print("event_0")
     
-    
 def event_1():
     print("event_1")
     sm.set_num_voices(1)
@@ -101,22 +91,25 @@ def event_3():
 def num_synths_slider_move(e):
     sm.set_num_voices(e.GetEventObject().GetValue())
 
+def sf_speed_slider_move(e):
+    audio_file.speed = e.GetEventObject().GetValue() / 200
+
 metro = Metro(4).play()
 count = Counter(metro, min=0, max=8)
 score = Score(count, fname="event_")
 
-# s.gui(locals())
-
 app = wx.App(False)
-control_window = wx.Frame(None, wx.ID_ANY, "Hello")
+control_window = wx.Frame(None, wx.ID_ANY, "Soundscape 1")
 control_window.Show(True)
-num_synths_slider = wx.Slider(control_window, 0, 10, pos=wx.Point(0, 20), minValue=1, maxValue=10)
+num_synths_slider = wx.Slider(control_window, pos=wx.Point(0, 30), minValue=1, maxValue=10)
 num_synths_slider.Bind(wx.EVT_SLIDER, num_synths_slider_move)
+num_synths_slider_label = wx.StaticText(control_window, label="synth voices", pos=(10, 10))
 
+sf_speed_slider = wx.Slider(control_window, pos=wx.Point(0, 70), minValue=-200, maxValue=200)
+sf_speed_slider.Bind(wx.EVT_SLIDER, sf_speed_slider_move)
+sf_speed_slider_label = wx.StaticText(control_window, label="soundfile speed", pos=(10, 50))
 
-# voices_slider4 = wx.Slider(control_window, 0, 10)
 s.start()
 app.MainLoop()
 
 s.recstop()
-#s.gui(locals())
