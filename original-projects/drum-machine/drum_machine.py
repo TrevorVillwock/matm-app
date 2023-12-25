@@ -12,19 +12,20 @@ tempo = 0.25 # in milliseconds
 kick_sample = pyo.SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav")
 snare_sample = pyo.SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav")
 hihat_sample = pyo.SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
-# kick_sample.ctrl()
-# kick_sample.play()
-# kick_sample.stop()
 
-hihat_click = pyo.Metro(tempo).play()
+hihat_click = pyo.Metro(tempo / 3).play()
+hihat_click.ctrl()
 snare_click = pyo.Metro(tempo).play()
+snare_click.ctrl()
 kick_click = pyo.Metro(tempo).play()
+kick_click.ctrl()
 
 # Create a signal to represent the count that we can pass to other places 
 hihat_counter = pyo.Sig(pyo.Counter(hihat_click, min=1, max=num_beats * subdivision + 1))
 snare_counter = pyo.Sig(pyo.Counter(snare_click, min=1, max=num_beats * subdivision + 1))
 kick_counter = pyo.Sig(pyo.Counter(kick_click, min=1, max=num_beats * subdivision + 1))
-    
+
+# TODO: wrap this in Events or something similar to use a list to populate match statements
 def play_hihat():
     count = hihat_counter.get()
     hihat_sample.mul = pyo.RandInt(100) / 100
@@ -56,7 +57,6 @@ def play_hihat():
             # print(f"count {int(count)}")
         case (9):
             hihat_sample.out()
-            kick_sample.out()
             # print(f"count {int(count)}")
         case (10):
             hihat_sample.out()
@@ -81,7 +81,7 @@ def play_hihat():
             # print(f"count {int(count)}")
 
 def play_snare():
-    count = hihat_counter.get()
+    count = snare_counter.get()
     snare_sample.mul = 0.75 + pyo.RandInt(100) / 100 * 0.25
     
     match count:
@@ -98,8 +98,8 @@ def play_snare():
             pass
             # print(f"count {int(count)}")
         case (5):
-            pass
             snare_sample.out()
+            pass
             # print(f"count {int(count)}")
         case (6):
             pass
@@ -120,9 +120,10 @@ def play_snare():
             pass
             # print(f"count {int(count)}")
         case (12):
-            snare_sample.out()
+            pass
             # print(f"count {int(count)}")
         case (13):
+            snare_sample.out()
             pass
             # print(f"count {int(count)}")
         case (14):
@@ -136,7 +137,7 @@ def play_snare():
             # print(f"count {int(count)}")
             
 def play_kick():
-    count = hihat_counter.get()
+    count = kick_counter.get()
     snare_sample.mul = 0.75 + pyo.RandInt(100) / 100 * 0.25
     
     match count:
