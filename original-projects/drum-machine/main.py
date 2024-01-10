@@ -21,6 +21,7 @@ main_click = pyo.Metro(tempo).play()
 hihat = Hihat(tempo, num_beats, subdivision, control_window)
 snare = Snare(tempo, num_beats, subdivision, control_window)
 kick = Kick(tempo, num_beats, subdivision, control_window)
+print(hihat.rhythm)
       
 def play_main():
     # update instrument speeds on downbeat to keep rhythmic alignment

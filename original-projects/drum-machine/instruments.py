@@ -14,6 +14,10 @@ class Instrument():
         # on the next beat
         self.speed = tempo         
         self.counter = pyo.Sig(pyo.Counter(self.click, min=1, max=num_beats * subdivision + 1))
+        self.rhythm = [1, 1, 1, 1,
+                       1, 1, 1, 1,
+                       1, 1, 1, 1, 
+                       1, 1, 1, 1]
 
     def play(self):
         count = int(self.counter.get())
@@ -25,8 +29,7 @@ class Instrument():
 # derived classes (also called a subclass or child class)
 # these have class members that differ between instruments
 class Hihat(Instrument):
-    def __init__(self, tempo, num_beats, subdivision, control_window):
-        # 
+    def __init__(self, tempo, num_beats, subdivision, control_window): 
         super().__init__(tempo, num_beats, subdivision)
         self.sample = pyo.SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")  
         self.tuplet_slider = wx.Slider(control_window, pos=wx.Point(0, 30), minValue=2, maxValue=10)
@@ -36,6 +39,9 @@ class Hihat(Instrument):
                        1, 1, 1, 1,
                        1, 1, 1, 1, 
                        1, 1, 1, 1]
+        
+        
+        # self.rhythm = np.repeat(1, 16)
 
     def set_tuplet(self, e):
         self.speed = 1.0 / e.GetEventObject().GetValue()
@@ -52,6 +58,9 @@ class Snare(Instrument):
                        1, 0, 0, 0,
                        0, 0, 0, 0, 
                        1, 0, 0, 0]
+        
+        # self.rhythm = np.repeat(1, 16)
+
     
     def set_tuplet(self, e):
         self.speed = 1.0 / e.GetEventObject().GetValue()
@@ -68,6 +77,8 @@ class Kick(Instrument):
                        0, 0, 0, 0,
                        1, 0, 0, 0, 
                        0, 0, 0, 0]
+        
+        # self.rhythm = np.repeat(1, 16)
             
     def set_tuplet(self, e):
         self.speed = 1.0 / e.GetEventObject().GetValue()
