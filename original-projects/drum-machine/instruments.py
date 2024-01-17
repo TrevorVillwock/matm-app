@@ -49,6 +49,10 @@ class Hihat(Instrument):
         self.reverb_is_on = pyo.Sig(1)
         self.reverb = pyo.Freeverb(self.delay_selector)
         self.reverb_selector = pyo.Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
+        self.delay_button = wx.Button(control_window, label="toggle delay", pos=wx.Point(160, 30))
+        self.delay_button.Bind(wx.EVT_BUTTON, self.toggleDelay)
+        self.reverb_button = wx.Button(control_window, label="toggle reverb", pos=wx.Point(260, 30))
+        self.reverb_button.Bind(wx.EVT_BUTTON, self.toggleReverb)
         
         # self.rhythm = np.repeat(1, 16)
 
@@ -56,17 +60,21 @@ class Hihat(Instrument):
         self.speed = 1.0 / e.GetEventObject().GetValue()
         print(f"hihat: {1 / self.speed}")
         
-    def toggleDelay(self):
-        if self.delay_is_on:
+    def toggleDelay(self, command):
+        print(command)
+        if self.delay_is_on.value:
             self.delay_is_on.setValue(0)
         else:
-            self.delay_is_on.setValue(1)  
+            self.delay_is_on.setValue(1)
+        print(f"delay: {self.delay_is_on._value}")  
         
-    def toggleReverb(self):
-        if self.reverb_is_on:
+    def toggleReverb(self, command):
+        print(command)
+        if self.reverb_is_on.value:
             self.reverb_is_on.setValue(0)
         else:
             self.reverb_is_on.setValue(1)
+        print(f"reverb: {self.reverb_is_on._value}")
 
 class Snare(Instrument):
     def __init__(self, tempo, num_beats, subdivision, control_window):
@@ -128,6 +136,10 @@ class Kick(Instrument):
         self.reverb_is_on = pyo.Sig(1)
         self.reverb = pyo.Freeverb(self.delay_selector)
         self.reverb_selector = pyo.Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
+        self.delay_button = wx.Button(control_window, label="toggle delay", pos=wx.Point(160, 110))
+        self.delay_button.Bind(wx.EVT_BUTTON, self.toggleDelay)
+        self.reverb_button = wx.Button(control_window, label="toggle reverb", pos=wx.Point(260, 110))
+        self.reverb_button.Bind(wx.EVT_BUTTON, self.toggleReverb)
 
         # self.rhythm = np.repeat(1, 16)
             
@@ -135,16 +147,20 @@ class Kick(Instrument):
         self.speed = 1.0 / e.GetEventObject().GetValue()
         print(f"kick: {1 / self.speed}")
         
-    def toggleDelay(self):
-        if self.delay_is_on:
+    def toggleDelay(self, command):
+        print(command)
+        if self.delay_is_on.value:
             self.delay_is_on.setValue(0)
         else:
-            self.delay_is_on.setValue(1)  
+            self.delay_is_on.setValue(1)
+        print(f"delay: {self.delay_is_on._value}")  
         
-    def toggleReverb(self):
-        if self.reverb_is_on:
+    def toggleReverb(self, command):
+        print(command)
+        if self.reverb_is_on.value:
             self.reverb_is_on.setValue(0)
         else:
             self.reverb_is_on.setValue(1)
+        print(f"reverb: {self.reverb_is_on._value}")
         
         
