@@ -79,31 +79,37 @@ class Snare(Instrument):
                        1, 0, 0, 0,
                        0, 0, 0, 0, 
                        0, 1, 0, 1]
-        self.delay = pyo.SmoothDelay(self.sample, delay=0.125, feedback=0.3)
+        self.delay = pyo.SmoothDelay(self.sample, delay=0.062, feedback=0.9)
         self.delay_is_on = pyo.Sig(1)
         self.delay_selector = pyo.Selector([self.sample, self.delay], self.delay_is_on) 
         self.reverb_is_on = pyo.Sig(1)
         self.reverb = pyo.Freeverb(self.delay_selector)
         self.reverb_selector = pyo.Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
-        
+        self.delay_button = wx.Button(control_window, label="toggle delay", pos=wx.Point(160, 70))
+        self.delay_button.Bind(wx.EVT_BUTTON, self.toggleDelay)
+        self.reverb_button = wx.Button(control_window, label="toggle reverb", pos=wx.Point(260, 70))
+        self.reverb_button.Bind(wx.EVT_BUTTON, self.toggleReverb)        
         # self.rhythm = np.repeat(1, 16)
-
     
     def set_tuplet(self, e):
         self.speed = 1.0 / e.GetEventObject().GetValue()
         print(f"snare: {1 / self.speed}")
     
-    def toggleDelay(self):
-        if self.delay_is_on:
+    def toggleDelay(self, command):
+        print(command)
+        if self.delay_is_on.value:
             self.delay_is_on.setValue(0)
         else:
-            self.delay_is_on.setValue(1)  
+            self.delay_is_on.setValue(1)
+        print(f"delay: {self.delay_is_on._value}")  
         
-    def toggleReverb(self):
-        if self.reverb_is_on:
+    def toggleReverb(self, command):
+        print(command)
+        if self.reverb_is_on.value:
             self.reverb_is_on.setValue(0)
         else:
             self.reverb_is_on.setValue(1)
+        print(f"reverb: {self.reverb_is_on._value}")
 
 class Kick(Instrument):
     def __init__(self, tempo, num_beats, subdivision, control_window):

@@ -29,7 +29,7 @@ def play_main():
     hihat.click.play()
     snare.click.setTime(snare.speed)
     kick.click.setTime(kick.speed)
-    print("play_main")
+    # print("play_main")
 
 main = pyo.TrigFunc(main_click, play_main)
 
