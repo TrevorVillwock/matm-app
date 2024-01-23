@@ -18,7 +18,7 @@ class Instrument():
         # 1 = note, 0 = rest
         
         self.sample = pyo.SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
-        self.delay = pyo.SmoothDelay(self.sample, delay=0.125, feedback=0.3)
+        self.delay = pyo.SmoothDelay(self.sample, delay=0.333, feedback=0.7)
         self.delay_is_on = pyo.Sig(1)
         self.delay_selector = pyo.Selector([self.sample, self.delay], self.delay_is_on) 
         self.reverb_is_on = pyo.Sig(1)

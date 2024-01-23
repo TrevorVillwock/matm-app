@@ -1,11 +1,26 @@
 import pyo
 import wx
 import numpy as np
+import json
 from instruments import Hihat, Snare, Kick
 
 s = pyo.Server().boot()
 s.start()
 
+
+with open("settings.json", 'r') as file:
+    data = json.load(file)
+    
+print(data)
+
+s.recordOptions(filename = f"./drum_machine_take{data['take_number']}.wav")
+
+new_take_number = data['take_number'] + 1
+
+with open("settings.json", 'w') as file:
+    data = json.dump({"take_number": new_take_number}, file)
+
+#data.write()
 app = wx.App(False)
 
 control_window = wx.Frame(None, wx.ID_ANY, "Drum Machine")
