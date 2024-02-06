@@ -1,5 +1,5 @@
 TODO:
-make Instrument superclass
+Add chords with automatic voice leading
 Sync tempo changes
 Add effects
 Add controls for density and variation to each instrument
