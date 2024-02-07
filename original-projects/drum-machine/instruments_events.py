@@ -36,63 +36,40 @@ class Instrument(EventInstrument):
         self.reverb_is_on = Sig(1)
         self.reverb = Freeverb(self.delay_selector)
         self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on)
-        
         # print("self.env: " + self.env)
 
 class HiHat(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-
         # self.freq is derived from the 'degree' argument.
-        
         self.phase = Phasor([self.freq, self.freq * 1.003])
-
         # self.dur is derived from the 'beat' argument.
-        
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-
         self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
-
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
         
 class Snare(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-
         # self.freq is derived from the 'degree' argument.
-        
         self.phase = Phasor([self.freq, self.freq * 1.003])
-
         # self.dur is derived from the 'beat' argument.
-        
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-
         self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav")
-
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
 
 class Kick(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-
         # self.freq is derived from the 'degree' argument.
-        
         self.phase = Phasor([self.freq, self.freq * 1.003])
-
         # self.dur is derived from the 'beat' argument.
-        
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-
         self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav")
-
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()       
-
-# test_hihat = HiHat()
-
-# print(test_hihat.osc)
 
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat = Events(
@@ -109,7 +86,7 @@ hihat = Events(
 snare = Events(
     instr=Snare,
     beat=1,
-    amp=EventSeq([0., 1., 0., 1.]),
+    amp=EventSeq([0, 1]),
     attack=0.001,
     decay=0.05,
     sustain=0.5,
@@ -120,7 +97,7 @@ snare = Events(
 kick = Events(
     instr=Kick,
     beat=1,
-    amp=EventSeq([0., 1., 0., 1.]),
+    amp=EventSeq([1, 0]),
     db=-12,
     attack=0.001,
     decay=0.05,
