@@ -25,20 +25,23 @@ from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, E
 
 s = Server().boot()
 
-# class Instrument(EventInstrument):
-#     def __init__(self, **args):
-#         EventInstrument.__init__(self, **args)
-#         self.delay = SmoothDelay(self.osc, delay=0.333, feedback=0.7)
-#         self.delay_is_on = Sig(1)
-#         self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
-#         self.reverb_is_on = Sig(1)
-#         self.reverb = Freeverb(self.delay_selector)
-#         self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on)
-
-class HiHat(EventInstrument):
+class Instrument(EventInstrument):
     def __init__(self, **args):
-        # Instrument.__init__(self, **args)
-        EventInstrument.__init__(self, **args)
+        # print("Instrument Constructor")
+        super().__init__(**args)
+        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
+        self.delay = SmoothDelay(self.osc, delay=0.333, feedback=0.7)
+        self.delay_is_on = Sig(1)
+        self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
+        self.reverb_is_on = Sig(1)
+        self.reverb = Freeverb(self.delay_selector)
+        self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on)
+        
+        # print("self.env: " + self.env)
+
+class HiHat(Instrument):
+    def __init__(self, **args):
+        super().__init__(**args)
 
         # self.freq is derived from the 'degree' argument.
         
@@ -53,10 +56,9 @@ class HiHat(EventInstrument):
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
         
-class Snare(EventInstrument):
+class Snare(Instrument):
     def __init__(self, **args):
-        # Instrument.__init__(self, **args)
-        EventInstrument.__init__(self, **args)
+        super().__init__(**args)
 
         # self.freq is derived from the 'degree' argument.
         
@@ -71,9 +73,9 @@ class Snare(EventInstrument):
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
 
-class Kick(EventInstrument):
+class Kick(Instrument):
     def __init__(self, **args):
-        EventInstrument.__init__(self, **args)
+        super().__init__(**args)
 
         # self.freq is derived from the 'degree' argument.
         
@@ -88,16 +90,20 @@ class Kick(EventInstrument):
         # EventInstrument created the amplitude envelope as self.env.
         self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()       
 
-    
+# test_hihat = HiHat()
+
+# print(test_hihat.osc)
+
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat = Events(
     instr=HiHat,
-    beat=1 / 5,
+    beat=1 / 6,
     db=-12,
     attack=0.001,
     decay=0.05,
     sustain=0.5,
     release=0.005,
+    bpm=60
 ).play()
 
 snare = Events(
@@ -108,6 +114,7 @@ snare = Events(
     decay=0.05,
     sustain=0.5,
     release=0.005,
+    bpm=60
 ).play()
 
 kick = Events(
@@ -119,6 +126,7 @@ kick = Events(
     decay=0.05,
     sustain=0.5,
     release=0.005,
+    bpm=60
 ).play()
 
 s.gui(locals())
