@@ -21,7 +21,7 @@ All arguments given to the Events object can be retrieved in our instrument with
 the syntax self.argument_name (ex.: self.freq).
 
 """
-from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, Expseg, ButLP, SfPlayer, Server, Events, EventSeq
+from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, Expseg, ButLP, SfPlayer, Server, Events, EventSeq, EventChoice
 
 s = Server().boot()
 
@@ -74,23 +74,15 @@ class Kick(Instrument):
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat = Events(
     instr=HiHat,
-    beat=1 / 6,
-    db=-12,
-    attack=0.001,
-    decay=0.05,
-    sustain=0.5,
-    release=0.005,
+    beat=0.2,
+    amp=EventSeq([0, 1, 1]),
     bpm=60
 ).play()
 
 snare = Events(
     instr=Snare,
     beat=1,
-    amp=EventSeq([0, 1]),
-    attack=0.001,
-    decay=0.05,
-    sustain=0.5,
-    release=0.005,
+    amp=EventSeq([0, 1]), # amp = amplitude = volume
     bpm=60
 ).play()
 
@@ -98,11 +90,6 @@ kick = Events(
     instr=Kick,
     beat=1,
     amp=EventSeq([1, 0]),
-    db=-12,
-    attack=0.001,
-    decay=0.05,
-    sustain=0.5,
-    release=0.005,
     bpm=60
 ).play()
 
