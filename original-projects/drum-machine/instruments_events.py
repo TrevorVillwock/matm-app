@@ -22,6 +22,7 @@ the syntax self.argument_name (ex.: self.freq).
 
 """
 from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, Expseg, ButLP, SfPlayer, Server, Events, EventSeq, EventChoice
+from effects import EffectsUnit
 
 s = Server().boot()
 
@@ -30,12 +31,6 @@ class Instrument(EventInstrument):
         # print("Instrument Constructor")
         super().__init__(**args)
         self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
-        self.delay = SmoothDelay(self.osc, delay=0.333, feedback=0.7)
-        self.delay_is_on = Sig(1)
-        self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
-        self.reverb_is_on = Sig(1)
-        self.reverb = Freeverb(self.delay_selector)
-        self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on)
         # print("self.env: " + self.env)
 
 class HiHat(Instrument):
@@ -47,7 +42,9 @@ class HiHat(Instrument):
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
         self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
         # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
+        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
+        self.effects = EffectsUnit(self.filt)
+        
         
 class Snare(Instrument):
     def __init__(self, **args):
@@ -58,7 +55,8 @@ class Snare(Instrument):
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
         self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav")
         # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()
+        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
+        self.effects = EffectsUnit(self.filt)
 
 class Kick(Instrument):
     def __init__(self, **args):
@@ -69,13 +67,14 @@ class Kick(Instrument):
         self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
         self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav")
         # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env).out()       
+        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
+        self.effects = EffectsUnit(self.filt)   
 
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat = Events(
     instr=HiHat,
     beat=0.2,
-    amp=EventSeq([0, 1, 1]),
+    amp=EventSeq([1, 1, 1]),
     bpm=60
 ).play()
 

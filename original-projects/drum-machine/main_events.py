@@ -2,7 +2,7 @@ import pyo
 import wx
 import numpy as np
 import json
-from instruments_metro import Hihat, Snare, Kick
+from instruments_events import HiHat, Snare, Kick
 
 s = pyo.Server().boot()
 s.start()
@@ -28,7 +28,7 @@ tempo = 0.25
 
 main_click = pyo.Metro(tempo).play()
 
-hihat = Hihat(tempo, num_beats, subdivision, control_window)
+hihat = HiHat(tempo, num_beats, subdivision, control_window)
 snare = Snare(tempo, num_beats, subdivision, control_window)
 kick = Kick(tempo, num_beats, subdivision, control_window)
 
