@@ -30,66 +30,49 @@ class Instrument(EventInstrument):
     def __init__(self, **args):
         # print("Instrument Constructor")
         super().__init__(**args)
-        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
+        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env)
         # print("self.env: " + self.env)
 
 class HiHat(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-        # self.freq is derived from the 'degree' argument.
-        self.phase = Phasor([self.freq, self.freq * 1.003])
-        # self.dur is derived from the 'beat' argument.
-        self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav")
-        # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
-        self.effects = EffectsUnit(self.filt)
-        
+        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env)
+        self.effects = EffectsUnit(self.osc)
         
 class Snare(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-        # self.freq is derived from the 'degree' argument.
-        self.phase = Phasor([self.freq, self.freq * 1.003])
-        # self.dur is derived from the 'beat' argument.
-        self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-        self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav")
-        # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
-        self.effects = EffectsUnit(self.filt)
+        self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav", mul=self.env)
+        self.effects = EffectsUnit(self.osc)
 
 class Kick(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-        # self.freq is derived from the 'degree' argument.
-        self.phase = Phasor([self.freq, self.freq * 1.003])
-        # self.dur is derived from the 'beat' argument.
-        self.duty = Expseg([(0, 0.05), (self.dur, 0.5)], exp=4).play()
-        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav")
-        # EventInstrument created the amplitude envelope as self.env.
-        self.filt = ButLP(self.osc, freq=5000, mul=self.env)
-        self.effects = EffectsUnit(self.filt)   
+        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env)
+        self.effects = EffectsUnit(self.osc)   
+
+BPM = 100
 
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat = Events(
     instr=HiHat,
-    beat=0.2,
-    amp=EventSeq([1, 1, 1]),
-    bpm=60
+    beat=0.333,
+    amp=EventSeq([1, 0, 1, 0, 1]),
+    bpm=BPM
 ).play()
 
 snare = Events(
     instr=Snare,
     beat=1,
     amp=EventSeq([0, 1]), # amp = amplitude = volume
-    bpm=60
+    bpm=BPM
 ).play()
 
 kick = Events(
     instr=Kick,
     beat=1,
     amp=EventSeq([1, 0]),
-    bpm=60
+    bpm=BPM
 ).play()
 
 s.gui(locals())

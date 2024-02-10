@@ -2,7 +2,8 @@ from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, E
 
 class EffectsUnit():
     def __init__(self, sound_source):
-        self.delay = SmoothDelay(sound_source, delay=0.333, feedback=0.7)
+        self.filt = ButLP(sound_source, freq=5000)
+        self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
         self.delay_is_on = Sig(0)
         self.delay_selector = Selector([sound_source, self.delay], self.delay_is_on) 
         self.reverb_is_on = Sig(1)
