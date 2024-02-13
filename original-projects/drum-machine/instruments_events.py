@@ -33,27 +33,45 @@ class Instrument(EventInstrument):
         self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env)
         # print("self.env: " + self.env)
 
-class HiHat(Instrument):
+class HiHat(EventInstrument):
     def __init__(self, **args):
-        super().__init__(**args)
-        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env)
+        EventInstrument.__init__(self, **args)
+        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env, speed=self.sample_speed)
         self.effects = EffectsUnit(self.osc)
         
 class Snare(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-        self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav", mul=self.env)
+        self.sample_speed = 1.0
+        self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav", mul=self.env, speed=self.sample_speed)
         self.effects = EffectsUnit(self.osc)
 
 class Kick(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
-        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env)
+        self.sample_speed = 1.0
+        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)
         self.effects = EffectsUnit(self.osc)   
 
 BPM = 100
 
 # We tell the Events object which instrument to use with the 'instr' argument.
+hihat1 = Events(
+    instr=HiHat,
+    beat=0.333,
+    amp=EventSeq([1, 0, 1, 0, 1]),
+    bpm=BPM,
+    sample_speed=0.7
+).play()
+
+hihat2 = Events(
+    instr=HiHat,
+    beat=0.5,
+    amp=EventSeq([1, 0, 1, 0, 1]),
+    bpm=BPM,
+    sample_speed=1.0
+).play()
+
 hihat = Events(
     instr=HiHat,
     beat=0.333,
