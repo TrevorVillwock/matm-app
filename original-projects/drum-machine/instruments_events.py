@@ -72,6 +72,14 @@ hihat2 = Events(
     sample_speed=1.0
 ).play()
 
+hihat3 = Events(
+    instr=HiHat,
+    beat=0.2,
+    amp=EventSeq([1, 1, 1, 1, 1]),
+    bpm=BPM,
+    sample_speed=1.0
+).play()
+
 hihat = Events(
     instr=HiHat,
     beat=0.333,
