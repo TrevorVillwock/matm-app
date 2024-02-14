@@ -36,8 +36,15 @@ class Instrument(EventInstrument):
 class HiHat(EventInstrument):
     def __init__(self, **args):
         EventInstrument.__init__(self, **args)
-        self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env, speed=self.sample_speed)
-        self.effects = EffectsUnit(self.osc)
+        try:
+            self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env, speed=self.sample_speed)
+        except Exception as e:
+            pass
+        
+        try:
+            self.effects = EffectsUnit(self.osc)
+        except Exception as e:
+            pass
         
 class Snare(Instrument):
     def __init__(self, **args):
