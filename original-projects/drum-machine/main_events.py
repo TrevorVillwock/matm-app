@@ -3,6 +3,9 @@ import wx
 import numpy as np
 import json
 from instruments_events import HiHat, Snare, Kick
+from gui import DrumMachineGUI
+import tkinter as tk
+import customtkinter as ctk
 
 s = pyo.Server().boot()
 s.start()
@@ -17,41 +20,41 @@ new_take_number = data['take_number'] + 1
 with open("settings.json", 'w') as file:
     data = json.dump({"take_number": new_take_number}, file)
 
-app = wx.App(False)
+root = ctk.CTk()
 
-control_window = wx.Frame(None, wx.ID_ANY, "Drum Machine")
-control_window.Show(True)
+gui = DrumMachineGUI(root)
 
-num_beats = 4
-subdivision = 4
-tempo = 0.25
+root.mainloop()
 
-main_click = pyo.Metro(tempo).play()
+# control_window = wx.Frame(None, wx.ID_ANY, "Drum Machine")
+# control_window.Show(True)
 
-hihat = HiHat(tempo, num_beats, subdivision, control_window)
-snare = Snare(tempo, num_beats, subdivision, control_window)
-kick = Kick(tempo, num_beats, subdivision, control_window)
+# num_beats = 4
+# subdivision = 4
+# tempo = 0.25
 
-mixer = pyo.Mixer(outs=2, chnls=3)
-mixer.addInput(0, hihat.reverb_selector)
-mixer.addInput(1, snare.reverb_selector)
-mixer.addInput(2, kick.reverb_selector)
-mixer.setAmp(0, 0, 0.3)
-mixer.setAmp(1, 0, 0.3)
-mixer.setAmp(2, 0, 0.3)
+# main_click = pyo.Metro(tempo).play()
 
-recorder = pyo.Record(mixer, "./test.wav")
+# hihat = HiHat(tempo, num_beats, subdivision, control_window)
+# snare = Snare(tempo, num_beats, subdivision, control_window)
+# kick = Kick(tempo, num_beats, subdivision, control_window)
+
+# mixer = pyo.Mixer(outs=2, chnls=3)
+# mixer.addInput(0, hihat.reverb_selector)
+# mixer.addInput(1, snare.reverb_selector)
+# mixer.addInput(2, kick.reverb_selector)
+# mixer.setAmp(0, 0, 0.3)
+# mixer.setAmp(1, 0, 0.3)
+# mixer.setAmp(2, 0, 0.3)
+
+# recorder = pyo.Record(mixer, "./test.wav")
       
-def play_main():
-    # update instrument speeds on downbeat to keep rhythmic alignment
-    hihat.click.setTime(hihat.speed)
-    hihat.click.play()
-    snare.click.setTime(snare.speed)
-    kick.click.setTime(kick.speed)
-    # print("play_main")
+# def play_main():
+#     # update instrument speeds on downbeat to keep rhythmic alignment
+#     hihat.click.setTime(hihat.speed)
+#     hihat.click.play()
+#     snare.click.setTime(snare.speed)
+#     kick.click.setTime(kick.speed)
+#     # print("play_main")
 
-main = pyo.TrigFunc(main_click, play_main)
-
-s.gui(locals)
-
-app.MainLoop()
+# main = pyo.TrigFunc(main_click, play_main)

@@ -36,6 +36,7 @@ class Instrument(EventInstrument):
 class HiHat(EventInstrument):
     def __init__(self, **args):
         EventInstrument.__init__(self, **args)
+        
         try:
             self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env, speed=self.sample_speed)
         except Exception as e:
@@ -60,7 +61,7 @@ class Kick(Instrument):
         self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)
         self.effects = EffectsUnit(self.osc)   
 
-BPM = 100
+BPM = Sig(100)
 
 # We tell the Events object which instrument to use with the 'instr' argument.
 hihat1 = Events(
