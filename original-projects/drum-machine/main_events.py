@@ -46,18 +46,11 @@ hihat3 = Events(
     bpm=BPM,
     sample_speed=1.0
 ).play()
-
-hihat = Events(
-    instr=HiHat,
-    beat=0.333,
-    amp=EventSeq([1, 0, 1, 0, 1]),
-    bpm=BPM
-).play()
-
+ 
 snare = Events(
     instr=Snare,
     beat=1,
-    amp=EventSeq([0, 1]), # amp = amplitude = volume
+    amp=EventSeq([0, 1, 0]), # amp = amplitude = volume
     bpm=BPM
 ).play()
 
@@ -73,10 +66,28 @@ instruments = [hihat1, hihat2, hihat3, snare, kick]
 def set_bpm(bpm):
     print(bpm)
     for i in instruments:
-        time1 = time.perf_counter()
+        # time1 = time.perf_counter_ns()
         i["bpm"] = bpm
-        time2 = time.perf_counter()
-        print(time2-time1)
+        # time2 = time.perf_counter_ns()
+        # print(time2-time1)
+        
+def set_hihat1_tuplet(time):
+    hihat1["beat"] = EventSeq([1 / time])
+    
+def set_hihat2_tuplet(time):
+    hihat2["beat"] = EventSeq([1 / time])
+
+def set_hihat3_tuplet(time):
+    hihat3["beat"] = EventSeq([1 / time])
+    
+def set_hihat1_sample_speed(speed):
+    hihat1["sample_speed"] = EventSeq([speed])
+    
+def set_hihat2_sample_speed(speed):
+    hihat2["sample_speed"] = EventSeq([speed])
+    
+def set_hihat3_sample_speed(speed):
+    hihat3["sample_speed"] = EventSeq([speed])
 
 ### GUI ###
 
@@ -89,37 +100,33 @@ bpm_slider.pack(pady=10)
 
 hihat1_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 1 tuplet')
 hihat1_tuplet_slider_label.pack(pady=10)
-hihat1_tuplet_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat1_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
 hihat1_tuplet_slider.pack(pady=10)
 
 hihat1_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 1 tuning')
 hihat1_tuning_slider_label.pack(pady=10)
-hihat1_tuning_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat1_tuning_slider = ctk.CTkSlider(root, command=set_hihat1_sample_speed, from_=0.1, to=2.0)
 hihat1_tuning_slider.pack(pady=10)
 
 hihat2_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuplet')
 hihat2_tuplet_slider_label.pack(pady=10)
-hihat2_tuplet_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat2_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
 hihat2_tuplet_slider.pack(pady=10)
 
 hihat2_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuning')
 hihat2_tuning_slider_label.pack(pady=10)
-hihat2_tuning_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat2_tuning_slider = ctk.CTkSlider(root, command=set_hihat2_sample_speed, from_=0.1, to=2.0)
 hihat2_tuning_slider.pack(pady=10)
 
 hihat3_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 3 tuplet')
 hihat3_tuplet_slider_label.pack(pady=10)
-hihat3_tuplet_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat3_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
 hihat3_tuplet_slider.pack(pady=10)
 
 hihat3_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 3 tuning')
 hihat3_tuning_slider_label.pack(pady=10)
-hihat3_tuning_slider = ctk.CTkSlider(root, from_=1, to=12)
+hihat3_tuning_slider = ctk.CTkSlider(root, command=set_hihat3_sample_speed, from_=0.1, to=2.0)
 hihat3_tuning_slider.pack(pady=10)
-
-
-
-
 
 print(hihat1["bpm"])
 root.mainloop()
