@@ -1,23 +1,15 @@
-
-
 import tkinter as tk
 import customtkinter as ctk
 from pyo import Server, Events, EventSeq
 
-# Define your Instrument classes here
-
-# Initialize the Pyo server
-
-def set_bpm():
-    pass
-    
-s = Server().boot()
+root = ctk.CTk()
 
 class DrumMachineGUI():
     def __init__(self, root):
+        print("GUI INIT")
         self.bpm_label = ctk.CTkLabel(root, text='BPM')
         self.bpm_label.pack(pady=10)
-        self.bpm_slider = ctk.CTkSlider(root, command=set_bpm, from_=60, to=200)
+        self.bpm_slider = ctk.CTkSlider(root, from_=60, to=200)
         self.bpm_slider.pack(pady=10)
 
         self.hihat1_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 1 tuplet')
@@ -49,6 +41,8 @@ class DrumMachineGUI():
         self.hihat3_tuning_slider_label.pack(pady=10)
         self.hihat3_tuning_slider = ctk.CTkSlider(root, from_=1, to=12)
         self.hihat3_tuning_slider.pack(pady=10)
+        
+        root.mainloop()
 
 # GPT-4:
 # Define the GUI class

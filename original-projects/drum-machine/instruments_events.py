@@ -24,8 +24,6 @@ the syntax self.argument_name (ex.: self.freq).
 from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, Expseg, ButLP, SfPlayer, Server, Events, EventSeq, EventChoice
 from effects import EffectsUnit
 
-s = Server().boot()
-
 class Instrument(EventInstrument):
     def __init__(self, **args):
         # print("Instrument Constructor")
@@ -60,53 +58,3 @@ class Kick(Instrument):
         self.sample_speed = 1.0
         self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)
         self.effects = EffectsUnit(self.osc)   
-
-BPM = Sig(100)
-
-# We tell the Events object which instrument to use with the 'instr' argument.
-hihat1 = Events(
-    instr=HiHat,
-    beat=0.333,
-    amp=EventSeq([1, 0, 1, 0, 1]),
-    bpm=BPM,
-    sample_speed=0.7
-).play()
-
-hihat2 = Events(
-    instr=HiHat,
-    beat=0.5,
-    amp=EventSeq([1, 0, 1, 0, 1]),
-    bpm=BPM,
-    sample_speed=1.0
-).play()
-
-hihat3 = Events(
-    instr=HiHat,
-    beat=0.2,
-    amp=EventSeq([1, 1, 1, 1, 1]),
-    bpm=BPM,
-    sample_speed=1.0
-).play()
-
-hihat = Events(
-    instr=HiHat,
-    beat=0.333,
-    amp=EventSeq([1, 0, 1, 0, 1]),
-    bpm=BPM
-).play()
-
-snare = Events(
-    instr=Snare,
-    beat=1,
-    amp=EventSeq([0, 1]), # amp = amplitude = volume
-    bpm=BPM
-).play()
-
-kick = Events(
-    instr=Kick,
-    beat=1,
-    amp=EventSeq([1, 0]),
-    bpm=BPM
-).play()
-
-s.gui(locals())
