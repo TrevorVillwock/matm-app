@@ -1,11 +1,11 @@
-# import pyo
-from pyo import EventInstrument, SmoothDelay, Sig, Selector, Freeverb, Phasor, Expseg, ButLP, SfPlayer, Server, Events, EventSeq, EventChoice
+from pyo import Server, Events, EventSeq
 import json
 from instruments_events import HiHat, Snare, Kick
-# from gui import DrumMachineGUI
 import tkinter as tk
 import customtkinter as ctk
-import time
+from threading import Thread
+# import time
+# from gui import DrumMachineGUI
 
 s = Server().boot()
 s.start()
@@ -49,27 +49,41 @@ hihat3 = Events(
  
 snare = Events(
     instr=Snare,
-    beat=1,
-    amp=EventSeq([0, 1, 0]), # amp = amplitude = volume
+    beat=0.5,
+    amp=EventSeq([0, 0, 1, 0, 0, 0, 1, 0]), # amp = amplitude = volume
     bpm=BPM
 ).play()
 
 kick = Events(
     instr=Kick,
-    beat=1,
-    amp=EventSeq([1, 0]),
+    beat=0.5,
+    amp=EventSeq([1, 0, 0, 1, 0, 1, 0, 0]),
     bpm=BPM
 ).play()
 
 instruments = [hihat1, hihat2, hihat3, snare, kick]
 
+# original code
+# def set_bpm(bpm):
+#     print(bpm)
+#     for i in instruments:
+#         # time1 = time.perf_counter_ns()
+#         i["bpm"] = bpm
+#         # time2 = time.perf_counter_ns()
+#         # print(time2-time1)
+
+# GPT-4 conversion to parallel processing using threads 
 def set_bpm(bpm):
+    def change_bpm(instrument):
+        instrument["bpm"] = bpm
+
+    threads = [Thread(target=change_bpm, args=(instr,)) for instr in instruments]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
     print(bpm)
-    for i in instruments:
-        # time1 = time.perf_counter_ns()
-        i["bpm"] = bpm
-        # time2 = time.perf_counter_ns()
-        # print(time2-time1)
         
 def set_hihat1_tuplet(time):
     hihat1["beat"] = EventSeq([1 / time])
@@ -110,7 +124,7 @@ hihat1_tuning_slider.pack(pady=10)
 
 hihat2_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuplet')
 hihat2_tuplet_slider_label.pack(pady=10)
-hihat2_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
+hihat2_tuplet_slider = ctk.CTkSlider(root, command=set_hihat2_tuplet, from_=1, to=12)
 hihat2_tuplet_slider.pack(pady=10)
 
 hihat2_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuning')
