@@ -30,6 +30,13 @@ class Instrument(EventInstrument):
         super().__init__(**args)
         self.osc = SfPlayer("./samples/hihat/MA_CRLV_Hat_Closed_One_Shot_Zip.wav", mul=self.env)
         # print("self.env: " + self.env)
+        # self.filt = ButLP(self.osc, freq=5000)
+        # self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
+        # self.delay_is_on = Sig(1)
+        # self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
+        # self.reverb_is_on = Sig(1)
+        # self.reverb = Freeverb(self.delay_selector)
+        # self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
 
 class HiHat(EventInstrument):
     def __init__(self, **args):
@@ -41,7 +48,11 @@ class HiHat(EventInstrument):
             pass
         
         try:
-            self.effects = EffectsUnit(self.osc)
+            self.filt = ButLP(self.osc, freq=5000)
+            self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
+            self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
+            self.reverb = Freeverb(self.delay_selector)
+            self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
         except Exception as e:
             pass
         
@@ -50,11 +61,25 @@ class Snare(Instrument):
         super().__init__(**args)
         self.sample_speed = 1.0
         self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav", mul=self.env, speed=self.sample_speed)
-        self.effects = EffectsUnit(self.osc)
+        try:
+            self.filt = ButLP(self.osc, freq=5000)
+            self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
+            self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
+            self.reverb = Freeverb(self.delay_selector)
+            self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
+        except Exception as e:
+            pass
 
 class Kick(Instrument):
     def __init__(self, **args):
         super().__init__(**args)
         self.sample_speed = 1.0
-        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)
-        self.effects = EffectsUnit(self.osc)   
+        self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)  
+        try:
+            self.filt = ButLP(self.osc, freq=5000)
+            self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
+            self.delay_selector = Selector([self.osc, self.delay], self.delay_is_on) 
+            self.reverb = Freeverb(self.delay_selector)
+            self.reverb_selector = Selector([self.delay_selector, self.reverb], self.reverb_is_on).out()
+        except Exception as e:
+            pass

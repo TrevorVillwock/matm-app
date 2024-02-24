@@ -1,10 +1,11 @@
-from pyo import Server, Events, EventSeq
+from pyo import Server, Events, EventSeq, Freeverb, Sig
 import json
 from instruments_events import HiHat, Snare, Kick
 import tkinter as tk
 import customtkinter as ctk
 from threading import Thread
 from functools import partial
+from effects import EffectsUnit
 # import time
 # from gui import DrumMachineGUI
 
@@ -29,7 +30,9 @@ hihat1 = Events(
     beat=0.333,
     amp=EventSeq([1, 0, 1, 0, 1]),
     bpm=BPM,
-    sample_speed=0.7
+    sample_speed=0.7,
+    delay_is_on=Sig(0),
+    reverb_is_on=Sig(0)
 ).play()
 
 hihat2 = Events(
@@ -37,7 +40,9 @@ hihat2 = Events(
     beat=0.5,
     amp=EventSeq([1, 0, 1, 0, 1]),
     bpm=BPM,
-    sample_speed=1.0
+    sample_speed=1.0,
+    delay_is_on=Sig(0),
+    reverb_is_on=Sig(0)
 ).play()
 
 hihat3 = Events(
@@ -45,21 +50,27 @@ hihat3 = Events(
     beat=0.2,
     amp=EventSeq([1, 1, 1, 1, 1]),
     bpm=BPM,
-    sample_speed=1.0
+    sample_speed=1.0,
+    delay_is_on=Sig(0),
+    reverb_is_on=Sig(0)
 ).play()
  
 snare = Events(
     instr=Snare,
     beat=0.5,
     amp=EventSeq([0, 0, 1, 0, 0, 0, 1, 0]), # amp = amplitude = volume
-    bpm=BPM
+    bpm=BPM,
+    delay_is_on=Sig(0),
+    reverb_is_on=Sig(0)
 ).play()
 
 kick = Events(
     instr=Kick,
     beat=0.25,
     amp=EventSeq([1, 0, 0, 0, 1, 1, 0, 0]),
-    bpm=BPM
+    bpm=BPM,
+    delay_is_on=Sig(0),
+    reverb_is_on=Sig(0)
 ).play()
 
 instruments = [hihat1, hihat2, hihat3, snare, kick]
@@ -97,137 +108,118 @@ def set_bpm(bpm):
 
     print(bpm)
 
-# single function set_tuplet that takes an instrument as an argument,
-# finds its name, and then acess that object's "beat" attribute
-
-def set_tuplet(time, arg1):
-    arg1["beat"] = EventSeq([1 / time])
-
-def set_hihat1_tuplet(time):
-    hihat1["beat"] = EventSeq([1 / time])
+def set_tuplet(time, instrument):
+    instrument["beat"] = EventSeq([1 / time])
     
-def set_hihat2_tuplet(time):
-    hihat2["beat"] = EventSeq([1 / time])
-
-def set_hihat3_tuplet(time):
-    hihat3["beat"] = EventSeq([1 / time])
-    
-def set_hihat1_sample_speed(speed):
-    hihat1["sample_speed"] = EventSeq([speed])
-    
-def set_hihat2_sample_speed(speed):
-    hihat2["sample_speed"] = EventSeq([speed])
-    
-def set_hihat3_sample_speed(speed):
-    hihat3["sample_speed"] = EventSeq([speed])
+def set_sample_speed(speed, instrument):
+    instrument["sample_speed"] = EventSeq([speed])
 
 ### GUI ###
 
 root = ctk.CTk()
 
-def toggle_color(button):
-    print(button)
-    # current_color = button.cget("bg")
-    # if current_color == "red":
-    #     button.config(bg="green")
-    # else:
-    #     button.config(bg="red")
-
-
-
+def toggle_reverb(button, instrument):
+    # print(button)
+    current_color = button.cget("fg_color")
+    # print(instrument["effects"])
+    print(instrument)
+    if current_color == "black":
+        instrument["reverb_is_on"].setValue(1)
+        button.configure(fg_color="green")
+        #instrument.instr.effects.reverb_is_on = 1
+    else:
+        instrument["reverb_is_on"].setValue(0)
+        button.configure(fg_color="black")
+        # instrument.instr.effects.reverb_is_on = 0
+    
+def toggle_delay(button, instrument):
+    print(instrument)
+    current_color = button.cget("fg_color")
+    if current_color == "black":
+        button.configure(fg_color="green")
+        instrument["delay_is_on"].setValue(1)
+    else:
+        button.configure(fg_color="black")
+        instrument["delay_is_on"].setValue(0)
 
 bpm_label = ctk.CTkLabel(root, text='BPM')
-bpm_label.pack(pady=10)
 bpm_slider = ctk.CTkSlider(root, command=set_bpm, from_=60, to=200)
+bpm_label.pack(pady=10)
 bpm_slider.pack(pady=10)
 
-hihat1_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="red", command=toggle_color)
-hihat1_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="red", command=toggle_color)
+hihat1_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="black")
+hihat1_reverb_toggle = partial(toggle_reverb, button=hihat1_reverb_button, instrument=hihat1)
+hihat1_reverb_button.configure(command=hihat1_reverb_toggle)
+
+hihat1_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="black")
+hihat1_delay_toggle = partial(toggle_delay, button=hihat1_delay_button, instrument=hihat1)
+hihat1_delay_button.configure(command=hihat1_delay_toggle)
+
 hihat1_reverb_button.pack(pady=20)
 hihat1_delay_button.pack(pady=20)
 
 hihat1_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 1 tuplet')
-hihat1_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
-hihat1_set_tuplet = partial(set_tuplet, arg1=hihat1)
-hihat1_tuplet_slider.configure(command=hihat1_set_tuplet)
+hihat1_set_tuplet = partial(set_tuplet, instrument=hihat1)
+hihat1_tuplet_slider = ctk.CTkSlider(root, command=hihat1_set_tuplet, from_=1, to=12)
+
 hihat1_tuplet_slider_label.pack(pady=10)
 hihat1_tuplet_slider.pack(pady=10)
 
 hihat1_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 1 tuning')
-hihat1_tuning_slider = ctk.CTkSlider(root, command=set_hihat1_sample_speed, from_=0.1, to=2.0)
+hihat1_set_sample_speed = partial(set_sample_speed, instrument=hihat1)
+hihat1_tuning_slider = ctk.CTkSlider(root, command=hihat1_set_sample_speed, from_=0.1, to=2.0)
+
 hihat1_tuning_slider_label.pack(pady=10)
 hihat1_tuning_slider.pack(pady=10)
 
-hihat2_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="red", command=toggle_color)
-hihat2_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="red", command=toggle_color)
+hihat2_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="black")
+hihat2_reverb_toggle = partial(toggle_reverb, button=hihat2_reverb_button, instrument=hihat2)
+hihat2_reverb_button.configure(command=hihat2_reverb_toggle)
+
+hihat2_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="black")
+hihat2_delay_toggle = partial(toggle_delay, button=hihat2_delay_button, instrument=hihat2)
+hihat2_delay_button.configure(command=hihat2_delay_toggle)
+
 hihat2_reverb_button.pack(pady=20)
 hihat2_delay_button.pack(pady=20)
 
 hihat2_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuplet')
-hihat2_tuplet_slider = ctk.CTkSlider(root, command=set_hihat2_tuplet, from_=1, to=12)
+hihat2_set_tuplet = partial(set_tuplet, instrument=hihat2)
+hihat2_tuplet_slider = ctk.CTkSlider(root, command=hihat2_set_tuplet, from_=1, to=12)
+hihat2_tuplet_slider.configure(command=hihat2_set_tuplet)
+
 hihat2_tuplet_slider_label.pack(pady=10)
 hihat2_tuplet_slider.pack(pady=10)
 
 hihat2_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 2 tuning')
-hihat2_tuning_slider = ctk.CTkSlider(root, command=set_hihat2_sample_speed, from_=0.1, to=2.0)
+hihat2_set_sample_speed = partial(set_sample_speed, instrument=hihat2)
+hihat2_tuning_slider = ctk.CTkSlider(root, command=hihat2_set_sample_speed, from_=0.1, to=2.0)
+
 hihat2_tuning_slider_label.pack(pady=10)
 hihat2_tuning_slider.pack(pady=10)
 
-hihat2_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="red", command=toggle_color)
-hihat2_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="red", command=toggle_color)
-hihat2_reverb_button.pack(pady=20)
-hihat2_delay_button.pack(pady=20)
+hihat3_reverb_button = ctk.CTkButton(root, text="Reverb", width=10, height=2, fg_color="black")
+hihat3_reverb_toggle = partial(toggle_reverb, button=hihat3_reverb_button, instrument=hihat3)
+hihat3_reverb_button.configure(command=hihat3_reverb_toggle)
+
+hihat3_delay_button = ctk.CTkButton(root, text="Delay", width=10, height=2, fg_color="black")
+hihat3_delay_toggle = partial(toggle_delay, button=hihat3_delay_button, instrument=hihat3)
+hihat3_delay_button.configure(command=hihat3_delay_toggle)
+
+hihat3_reverb_button.pack(pady=20)
+hihat3_delay_button.pack(pady=20)
 
 hihat3_tuplet_slider_label = ctk.CTkLabel(root, text='HiHat 3 tuplet')
-hihat3_tuplet_slider = ctk.CTkSlider(root, command=set_hihat1_tuplet, from_=1, to=12)
+hihat3_set_tuplet = partial(set_tuplet, instrument=hihat3)
+hihat3_tuplet_slider = ctk.CTkSlider(root, command=hihat3_set_tuplet, from_=1, to=12)
+hihat3_tuplet_slider.configure(command=hihat3_set_tuplet)
 hihat3_tuplet_slider_label.pack(pady=10)
 hihat3_tuplet_slider.pack(pady=10)
 
 hihat3_tuning_slider_label = ctk.CTkLabel(root, text='HiHat 3 tuning')
 hihat3_tuning_slider_label.pack(pady=10)
-hihat3_tuning_slider = ctk.CTkSlider(root, command=set_hihat3_sample_speed, from_=0.1, to=2.0)
+hihat3_set_sample_speed = partial(set_sample_speed, instrument=hihat3)
+hihat3_tuning_slider = ctk.CTkSlider(root, command=hihat3_set_sample_speed, from_=0.1, to=2.0)
 hihat3_tuning_slider.pack(pady=10)
 
-print(hihat1["bpm"])
 root.mainloop()
-
-
-
-
-#gui = DrumMachineGUI()
-#print(gui)
-
-# root.mainloop()
-
-# control_window = wx.Frame(None, wx.ID_ANY, "Drum Machine")
-# control_window.Show(True)
-
-# num_beats = 4
-# subdivision = 4
-# tempo = 0.25
-
-# main_click = pyo.Metro(tempo).play()
-
-# hihat = HiHat(tempo, num_beats, subdivision, control_window)
-# snare = Snare(tempo, num_beats, subdivision, control_window)
-# kick = Kick(tempo, num_beats, subdivision, control_window)
-
-# mixer = pyo.Mixer(outs=2, chnls=3)
-# mixer.addInput(0, hihat.reverb_selector)
-# mixer.addInput(1, snare.reverb_selector)
-# mixer.addInput(2, kick.reverb_selector)
-# mixer.setAmp(0, 0, 0.3)
-# mixer.setAmp(1, 0, 0.3)
-# mixer.setAmp(2, 0, 0.3)
-
-# recorder = pyo.Record(mixer, "./test.wav")
-      
-# def play_main():
-#     # update instrument speeds on downbeat to keep rhythmic alignment
-#     hihat.click.setTime(hihat.speed)
-#     hihat.click.play()
-#     snare.click.setTime(snare.speed)
-#     kick.click.setTime(kick.speed)
-#     # print("play_main")
-
-# main = pyo.TrigFunc(main_click, play_main)
