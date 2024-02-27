@@ -5,7 +5,6 @@ import tkinter as tk
 import customtkinter as ctk
 from threading import Thread
 from functools import partial
-from effects import EffectsUnit
 # import time
 # from gui import DrumMachineGUI
 
@@ -18,6 +17,16 @@ with open("settings.json", 'r') as file:
 s.recordOptions(filename = f"./drum_machine_take{data['take_number']}.wav")
 
 new_take_number = data['take_number'] + 1
+
+"""
+preset parameters organized by instrument
+tuplet
+rhythmic pattern
+bpm
+sample tuning
+
+"""
+presets = data["presets"]
 
 with open("settings.json", 'w') as file:
     data = json.dump({"take_number": new_take_number}, file)
@@ -66,8 +75,9 @@ snare = Events(
 
 kick = Events(
     instr=Kick,
-    beat=0.25,
-    amp=EventSeq([1, 0, 0, 0, 1, 1, 0, 0]),
+    beat=0.5,
+    amp=EventSeq([1, 0, 0, 0, 1, 0, 0, 0,
+                  1, 0, 0, 0, 1, 0, 0, 1]),
     bpm=BPM,
     delay_is_on=Sig(0),
     reverb_is_on=Sig(0)
@@ -106,7 +116,7 @@ def set_bpm(bpm):
     for thread in threads:
         thread.join()
 
-    print(bpm)
+    # print(bpm)
 
 def set_tuplet(time, instrument):
     instrument["beat"] = EventSeq([1 / time])
@@ -122,7 +132,7 @@ def toggle_reverb(button, instrument):
     # print(button)
     current_color = button.cget("fg_color")
     # print(instrument["effects"])
-    print(instrument)
+    # print(instrument)
     if current_color == "black":
         instrument["reverb_is_on"].setValue(1)
         button.configure(fg_color="green")
@@ -133,7 +143,7 @@ def toggle_reverb(button, instrument):
         # instrument.instr.effects.reverb_is_on = 0
     
 def toggle_delay(button, instrument):
-    print(instrument)
+    # print(instrument)
     current_color = button.cget("fg_color")
     if current_color == "black":
         button.configure(fg_color="green")

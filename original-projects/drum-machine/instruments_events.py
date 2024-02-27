@@ -61,6 +61,7 @@ class Snare(Instrument):
         super().__init__(**args)
         self.sample_speed = 1.0
         self.osc = SfPlayer("./samples/snare/rhh_snare_one_shot_mid_short_old.wav", mul=self.env, speed=self.sample_speed)
+        
         try:
             self.filt = ButLP(self.osc, freq=5000)
             self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
@@ -75,6 +76,7 @@ class Kick(Instrument):
         super().__init__(**args)
         self.sample_speed = 1.0
         self.osc = SfPlayer("./samples/kick/FL_LOFI_Kit09_Kick.wav", mul=self.env, speed=self.sample_speed)  
+        
         try:
             self.filt = ButLP(self.osc, freq=5000)
             self.delay = SmoothDelay(self.filt, delay=0.333, feedback=0.7)
